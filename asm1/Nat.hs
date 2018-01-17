@@ -165,7 +165,10 @@ gt (Succ num) (Succ num2) = gt num num2
 --   >>> toInt (mult three three)
 --   9
 --
-mult = undefined
+mult :: Nat -> Nat -> Nat
+mult Zero _ = Zero
+mult _ Zero = Zero
+--NEED THE NON ZERO CASE
 
 
 -- | Compute the sum of a list of natural numbers.
@@ -179,7 +182,9 @@ mult = undefined
 --   >>> toInt (sum [one,two,three])
 --   6
 --
-sum = undefined
+sum :: [Nat] -> Nat
+sum [] = Zero
+sum (h:t) = add h (sum t)
 
 
 -- | An infinite list of all of the *odd* natural numbers, in order.
