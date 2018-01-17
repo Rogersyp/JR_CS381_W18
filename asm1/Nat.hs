@@ -82,11 +82,19 @@ toInt (Succ num) = 1 + (toInt num)
 --   >>> add two three == add three two
 --   True
 --   
+
+-- How It Works: The function recursivly adds the two numbers
+-- together by exploiting that (num1 + 1) + (num2 - 1) == num1 + num2.
+-- So, the function does this until the base case is met where one of the numbers
+-- is Zero. (add num Zero = num).
+-- Example: add two two == add (Succ two) one --> 
+--			add three one == add (Succ three) Zero -->
+--			add four Zero == four == Succ (Succ (Succ (Succ Zero)))
 add :: Nat -> Nat -> Nat
 add Zero Zero = Zero
 add Zero num = num
 add num Zero = num
-add num num2 = --NEED TO FINISH THIS CASE
+add num (Succ num2) = add (Succ num) num2
 
 
 -- | Subtract the second natural number from the first. Return zero
@@ -104,7 +112,19 @@ add num num2 = --NEED TO FINISH THIS CASE
 --   >>> sub one three
 --   Zero
 --
-sub = undefined
+
+-- How It Works: The function recursivly subtracts the two numbers
+-- together by exploiting that num1 - num2 == (num1 - 1) - (num2 - 1).
+-- So, the function does this until the base case is met where one of the numbers
+-- is Zero. (sub num Zero = num).
+-- Example: sub four two == sub (Succ three) (Succ one) --> 
+--			sub three one == sub (Succ two) (Succ Zero) -->
+--			sub two Zero == two == (Succ (Succ Zero))
+sub :: Nat -> Nat -> Nat
+sub Zero Zero = Zero
+sub Zero num = Zero
+sub num Zero = num
+sub (Succ num) (Succ num2) = sub num num2
 
 
 -- | Is the left value greater than the right?
@@ -118,8 +138,18 @@ sub = undefined
 --   >>> gt two two
 --   False
 --
-gt = undefined
 
+-- How It Works: This function utilizes the same algorithm
+-- as sub does. The numbers are recursively reduced by one 
+-- until one of them is Zero. If the number on the left is
+-- zero first, then the right number is LESS than the right number.
+-- If the number on the right is zero first, then the left
+-- number is GREATER than the right number
+gt :: Nat -> Nat -> Bool
+gt Zero Zero = False
+gt Zero num = False
+gt num Zero = True
+gt (Succ num) (Succ num2) = gt num num2
 
 -- | Multiply two natural numbers.
 --
