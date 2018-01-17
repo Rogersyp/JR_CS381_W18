@@ -140,7 +140,7 @@ sumInts (Node i l r) = i + (sumInts l) + (sumInts r)
 --   
 preorder :: Tree -> [Int]
 preorder (Leaf i) = [i]
-preorder (Node i l r) = (inorder l) ++ [i] ++ (inorder r)
+preorder (Node i l r) = [i] ++ (preorder l) ++ (preorder r)
 
 
 -- | The list of integers encountered by an in-order traversal of the tree.
@@ -175,14 +175,21 @@ inorder (Node i l r) = (inorder l) ++ [i] ++ (inorder r)
 --
 --   >>> isBST t2
 --   True
---   
+--
+
+-- | myVal is used to get the value of a Node
+--   This function is used in isBST to compare
+--   the current node with its subtrees
+myVal :: Tree -> Int
+myVal (Leaf i) = i
+myVal (Node i l r) = i
+
 isBST :: Tree -> Bool
 isBST (Leaf i) = True
-isBST (Node i (Leaf l) (Leaf r))
-   | l > i     = False
-   | r < i     = False
-   | otherwise = True
--- not done yet   
+isBST (Node i l r)
+   | (myVal l) > i     = False
+   | (myVal r) <= i     = False
+   | otherwise = isBST l && isBST r
 
 
 
