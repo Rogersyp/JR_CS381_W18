@@ -1,3 +1,7 @@
+--- Implemented by
+--      * Yipeng Song
+--      * Jeremy Fischer
+
 module Tree where
 
 

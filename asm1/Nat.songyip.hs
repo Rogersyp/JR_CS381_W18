@@ -1,3 +1,7 @@
+--- Implemented by
+--      * Yipeng Song
+--      * Jeremy Fischer
+
 module Nat where
 
 import Prelude hiding (Enum(..), sum)
