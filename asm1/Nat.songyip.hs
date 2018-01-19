@@ -168,7 +168,7 @@ gt (Succ num) (Succ num2) = gt num num2
 mult :: Nat -> Nat -> Nat
 mult Zero _ = Zero
 mult _ Zero = Zero
---NEED THE NON ZERO CASE
+mult num1 (Succ num2) = add num1 (mult num1 num2)
 
 
 -- | Compute the sum of a list of natural numbers.
@@ -195,4 +195,5 @@ sum (h:t) = add h (sum t)
 --   >>> toInt (sum (take 100 odds))
 --   10000
 --
-odds = undefined
+odds :: [Nat]
+odds = one : map (add two) odds
