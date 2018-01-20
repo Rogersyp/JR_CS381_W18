@@ -1,6 +1,6 @@
 --- Implemented by
 --      * Yipeng Song
---      * Jeremy Fischer
+--      * Jeremy Fischer 932-447-681
 
 module Nat where
 
