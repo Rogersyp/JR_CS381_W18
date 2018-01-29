@@ -181,6 +181,9 @@ inorder (Node i l r) = (inorder l) ++ [i] ++ (inorder r)
 --   >>> isBST t2
 --   True
 --
+--   >>> isBst (Node 6 (Node 2 (Leaf 1) (Node 4 (Leaf 3) (Leaf 5))) (Node 8 (Leaf 1) (Leaf 9)))
+--   False
+--
 
 -- | myVal is used to get the value of a Node
 --   This function is used in isBST to compare
