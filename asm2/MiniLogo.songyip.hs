@@ -1,4 +1,5 @@
 -- Jeremy Fischer 932-447-681
+-- Peter Dorich 932-441-378
 
 module MiniLogo where
 
@@ -54,3 +55,16 @@ nix = Define "nix" ["x1", "y1", "w", "h"]
         Call "line" [Ref "x1", Ref "y1", Add Ref "x1" Ref "w", Add Ref "y1" Ref "h"], 
         Call "line" [Ref "x1", Add Ref "y1" Ref "h", Add Ref "x1" Ref "w", Ref "y1"] 
        ]
+
+-- 4.	
+-- 	steps :: Int -> Prog
+--	edge_case when steps == 0
+--	regular step: Starts at (val, val) --> recurses on predecessor of the value
+--		      Pen gets put down after (0,0), and draws to the top from there. 
+
+steps :: Int -> Prog
+steps 0 = [Pen Up, Move (Lit 0, Lit 0), Pen Down]
+steps val = steps (pred val) ++ [Move ((Lit (pred val)),
+            (Lit val))] ++ [Move ((Lit val), (Lit val))]
+
+
