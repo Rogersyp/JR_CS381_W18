@@ -1,4 +1,5 @@
 -- Jeremy Fischer 932-447-681
+-- Peter Dorich 932-441-378
 
 module MiniLogo where
 
@@ -54,7 +55,7 @@ nix = Define "nix" ["x1", "y1", "w", "h"]
        ]
 
 
--- 4. 
+-- Jeremy's 4. 
 --      constructs a MiniLogo program that draws a staircase of n 
 --      steps starting from (0,0).
 --      define stair(xStart, yStart){
@@ -78,3 +79,17 @@ nix = Define "nix" ["x1", "y1", "w", "h"]
 --             then [Pen Up] 
 --           else
 --             [Call "stair" [Lit (pred n), Lit (pred n)]] ++ steps(pred n)
+
+
+-- 4.	
+-- 	steps :: Int -> Prog
+--	edge_case when steps == 0
+--	regular step: Starts at (val, val) --> recurses on predecessor of the value
+--		      Pen gets put down after (0,0), and draws to the top from there. 
+
+steps :: Int -> Prog
+steps 0 = [Pen Up, Move (Lit 0, Lit 0), Pen Down]
+steps val = steps (pred val) ++ [Move ((Lit (pred val)),
+            (Lit val))] ++ [Move ((Lit val), (Lit val))]
+
+
