@@ -1,3 +1,5 @@
+-- Jeremy Fischer 932-447-681
+
 module MiniLogo where
 
 import Data.List
@@ -39,3 +41,16 @@ line = Define "line" ["x1", "y1", "x2", "y2"]
 
 
 
+-- 3. 
+--      MiniLogo concrete syntax:
+--      define nix (x1, y1, w, h) {
+--          line(x1, y1, x1 + w, y1 + h) -- draw /
+--          line(x1, y1 + h, x1 + w, y1) -- draw \
+--      }    
+
+nix::Cmd
+nix = Define "nix" ["x1", "y1", "w", "h"]
+       [
+        Call "line" [Ref "x1", Ref "y1", Add Ref "x1" Ref "w", Add Ref "y1" Ref "h"], 
+        Call "line" [Ref "x1", Add Ref "y1" Ref "h", Add Ref "x1" Ref "w", Ref "y1"] 
+       ]
