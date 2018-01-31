@@ -56,6 +56,7 @@ nix = Define "nix" ["x1", "y1", "w", "h"]
 
 
 
+
 -- 4.	
 -- 	steps :: Int -> Prog
 --	edge_case when steps == 0
@@ -84,3 +85,38 @@ checkMacro (_) = []
 macros :: Prog -> [Macro]
 macros [] = []
 macros (x:t) = checkMacro x ++ macros t
+
+
+-- 6.
+--
+--
+extractExpr :: Expr -> String
+extractExpr (Ref var) = var
+extractExpr (Lit num) = show num
+extractExpr (Add expr1 expr2) = " " ++ extractExpr expr1 ++ "+" ++ extractExpr expr2
+
+
+getExprs :: [Expr] -> String
+getExprs [] = ""
+getExprs (x:t) = extractExpr x ++ getExprs t
+
+getVars :: [Var] -> String
+getVars [] = ""
+getVars (x:[]) = x
+getVars (x:t) = x ++ ", " ++ getVars t
+
+getProg :: Prog -> String
+getProg [] = ""
+getProg (x:t) = "\t" ++  printCurrCmd x ++ getProg t 
+
+printCurrCmd :: Cmd -> String
+printCurrCmd (Pen Up) = "Pen Up \n"
+printCurrCmd (Pen Down) = "Pen Down \n"
+printCurrCmd (Move (exp1, exp2)) = "Move (" ++ extractExpr exp1 ++ "," ++ extractExpr exp2 ++ ") \n"
+printCurrCmd (Define macro vars prog) = "Define " ++ macro ++ "("++ getVars vars ++ ") { \n" ++ getProg prog ++ "} \n"
+printCurrCmd (Call macro exprs) = "Call " ++ macro ++ "("++ getExprs exprs ++ ") \n"
+ 
+
+pretty :: Prog -> String
+pretty [] = ""
+pretty (x:t) = printCurrCmd x ++ pretty t
