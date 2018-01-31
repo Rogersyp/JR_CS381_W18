@@ -55,31 +55,6 @@ nix = Define "nix" ["x1", "y1", "w", "h"]
        ]
 
 
--- Jeremy's 4. 
---      constructs a MiniLogo program that draws a staircase of n 
---      steps starting from (0,0).
---      define stair(xStart, yStart){
---          line(xStart, yStart, xStart, yStart + 1)     -- draw |
---          line(xStart, yStart + 1, xStart + 1, yStart) -- draw --
---      }
---
---
--- stair::Cmd
--- stair = Define "stair" ["xStart", "yStart"]
---        [
---         Call "line" [Ref "xStart", Ref "yStart", Ref "xStart", Add (Ref "yStart") (Ref "1")], 
---         Call "line" [Ref "xStart", Add (Ref "yStart") (Ref "1"), Add (Ref "xStart") (Ref "1"), Ref "yStart"] 
---        ]
--- -- How it works:
--- --      - draw a stair going up then right starting from (n-1)(n-1)
--- --      - recursivly draw a single stair until 0 is reached
--- --      - when 0 is reached, stop, lift pen up
--- steps :: Int -> Prog
--- steps n = if(n <= 0) 
---             then [Pen Up] 
---           else
---             [Call "stair" [Lit (pred n), Lit (pred n)]] ++ steps(pred n)
-
 
 -- 4.	
 -- 	steps :: Int -> Prog
@@ -93,3 +68,19 @@ steps val = steps (pred val) ++ [Move ((Lit (pred val)),
             (Lit val))] ++ [Move ((Lit val), (Lit val))]
 
 
+
+-- 5.
+-- Returns a list of the names of all of the macros that are defined anywhere in a given MiniLogo program.
+--
+-- How it works: Traverse the list of commands,
+--          If the current commad matches 'Define name _ _'
+--          then it is a macro so return a list with the name in it.
+--          If not, then return an empty list.
+--          Traverse the reset of the list
+checkMacro::Cmd -> [String]
+checkMacro (Define name _ _) = [name]
+checkMacro (_) = []
+
+macros :: Prog -> [Macro]
+macros [] = []
+macros (x:t) = checkMacro x ++ macros t
