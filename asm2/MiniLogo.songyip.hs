@@ -37,7 +37,7 @@ data Cmd   = Pen Mode                -- change pen mode
 --      }    	
 line :: Cmd
 line = Define "line" ["x1", "y1", "x2", "y2"]
-       [Pen Up, Move (Ref "x1", Ref "y1"), Pen Down, Move (Ref "x2", Ref "y2")]
+    [Pen Up, Move (Ref "x1", Ref "y1"), Pen Down, Move (Ref "x2", Ref "y2")]
 
 
 
@@ -89,16 +89,22 @@ macros (x:t) = checkMacro x ++ macros t
 
 -- 6.
 --
+-- How it works: Just simply pattern matching and extracting out arguments
+--              In the case of a macro, getProg is called which is the same as
+--              pretty, it just adds a tab in front to show indentation
 --
+-- To test do: ghci MiniLogo.songyip.hs
+--              then putStrLn(pretty [Pen Up, Move (Lit 0,Lit 0), Define "line" ["x1", "y1", "x2", "y2"] [Pen Up, Move (Ref "x1", Ref "y1"), Pen Down, Move (Ref "x2", Ref "y2")], Call "line" [Ref "x1", Ref "y1", Add (Ref "x1") (Ref "w"), Add (Ref "y1") (Ref "h")]   ])
 extractExpr :: Expr -> String
 extractExpr (Ref var) = var
 extractExpr (Lit num) = show num
-extractExpr (Add expr1 expr2) = " " ++ extractExpr expr1 ++ "+" ++ extractExpr expr2
+extractExpr (Add expr1 expr2) = extractExpr expr1 ++ "+" ++ extractExpr expr2
 
 
 getExprs :: [Expr] -> String
 getExprs [] = ""
-getExprs (x:t) = extractExpr x ++ getExprs t
+getExprs (x:[]) = extractExpr x
+getExprs (x:t) = extractExpr x ++ ", " ++ getExprs t
 
 getVars :: [Var] -> String
 getVars [] = ""
