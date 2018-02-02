@@ -1,5 +1,6 @@
 -- Jeremy Fischer 932-447-681
 -- Peter Dorich 932-441-378
+-- Yipeng Song 932-470-819
 
 module MiniLogo where
 
