@@ -1,5 +1,6 @@
 -- Jeremy Fischer 932-447-681
 -- Peter Dorich 932-441-378
+-- Yipeng Song 932-470-819
 
 module MiniLogo where
 
@@ -26,7 +27,8 @@ data Expr  = Ref Var   -- variable reference
 data Cmd   = Pen Mode                -- change pen mode
            | Move (Expr, Expr)       -- move pen to a new positon
            | Define Macro [Var] Prog -- define a macro
-           | Call Macro [Expr]       -- invoke a macro    
+           | Call Macro [Expr]       -- invoke a macro 
+           deriving Show   
 
 
 -- 2. 
@@ -126,3 +128,32 @@ printCurrCmd (Call macro exprs) = "Call " ++ macro ++ "("++ getExprs exprs ++ ")
 pretty :: Prog -> String
 pretty [] = ""
 pretty (x:t) = printCurrCmd x ++ pretty t
+
+
+--7. 
+optE :: Expr -> Expr
+optE (Ref x) = Ref x
+optE (Lit x) = Lit x
+optE (Add (Lit x) (Lit y)) = Lit (x + y)
+optE (Add x y) = Add (optE x) (optE y)
+
+
+--8. 
+--	How it works:
+--	(1) if given an empty prog, then return empty
+--	(2) if given an non-empty prog, then call the helper function optC
+--	    to optimize the first single command, and apend to the rest (recursively all optP)  	
+optP :: Prog -> Prog
+optP []  = []
+optP (x : xs) = optC x : optP xs
+
+optEx :: [Expr] -> [Expr]
+optEx [] = []
+optEx [x] = [optE x]
+optEx (x : xs) = optE x : optEx xs
+
+optC :: Cmd -> Cmd
+optC (Move (x, y)) = Move ((optE x), (optE y))
+optC (Call c (x : xs)) = Call c (optE x : optEx xs)
+optC c = c
+
