@@ -95,4 +95,17 @@ getNewState (Move newX newY) (mode, (curX, curY))  = (mode, (newX, newY))
 -- | This should be a MiniMiniLogo program that draws an amazing picture.
 --   Add as many helper functions as you want.
 amazing :: Prog
-amazing = undefined
+amazing = goTo (33, 24) ++
+          [Move 30 24, Move 30 20, Move 33 20] ++
+          goTo (38, 24) ++
+          [Move 35 24, Move 35 22, Move 38 22, Move 38 20, Move 35 20] ++
+          goTo (40, 24) ++
+          [Move 43 24, Move 43 22, Move 40 22, Move 43 22, Move 43 20, Move 40 20] ++
+          goTo (45, 22) ++
+          [Move 45 24, Move 48 24, Move 48 22, Move 45 22, Move 45 20, Move 48 20, Move 48 22] ++
+          goTo (50, 23) ++
+          [Move 51 24, Move 51 20, Move 50 20, Move 52 20]
+
+
+goTo :: (Int, Int) -> Prog
+goTo (x, y) = [Pen Up, Move x y, Pen Down]      
