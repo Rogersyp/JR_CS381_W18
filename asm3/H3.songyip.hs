@@ -1,3 +1,5 @@
+-- Jeremy Fischer   932-447-681
+
 module HW3 where
 
 import MiniMiniLogo
