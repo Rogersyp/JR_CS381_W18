@@ -1,5 +1,7 @@
 -- Jeremy Fischer   932-447-681
-
+-- Yipeng Song	    932-470-819
+--
+--
 module HW3 where
 
 import MiniMiniLogo
