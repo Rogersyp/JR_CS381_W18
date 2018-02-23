@@ -8,8 +8,21 @@ import KarelState
 
 
 -- | Valuation function for Test.
+
+-- -- | Environment queries.
+-- data Test = Not    Test   -- boolean negation
+--           | Facing Card   -- am I facing the given cardinal direction?
+--           | Clear  Dir    -- can I move in the given relative direction?
+--           | Beeper        -- is there a beeper here?
+--           | Empty         -- is my beeper bag empty?
+--   deriving (Eq,Show)
+
 test :: Test -> World -> Robot -> Bool
-test = undefined
+test (Not tst) w r = not (test tst w r)
+test (Facing card) _ r = card == getFacing r 
+test (Clear dir) w r = isClear (getPos r) w
+test (Beeper) w r = hasBeeper (getPos r) w
+test (Empty) _ r = isEmpty r
 
 -- | Valuation function for Stmt.
 stmt :: Stmt -> Defs -> World -> Robot -> Result
