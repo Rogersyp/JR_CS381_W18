@@ -1,6 +1,6 @@
 
 -- Jeremy Fischer 932-447-681
-
+-- Peter Dorich 932-441-378
 
 
 module KarelSemantics where
@@ -69,6 +69,17 @@ stmt PutBeeper _ w r = let p = getPos r
 
 -- Simply turn the robot to the dir direction
 stmt (Turn dir) _ w r = OK w (setFacing (cardTurn dir (getFacing r)) r)  
+
+-- Call a Macro using the lookup function
+stmt (Call m)   d w r = case lookup m d of
+                          (Just b) -> stmt b d w r
+                          _        -> Error ("Undefined macro: " ++ m)
+
+--ITERATE:
+
+
+
+--If (Test Stmt Stmt) -- conditional branch -- (if clear front?)
 
                        
 
