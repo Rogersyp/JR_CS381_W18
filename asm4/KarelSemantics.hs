@@ -80,8 +80,10 @@ stmt (Call m)   d w r = case lookup m d of
 
 
 --If (Test Stmt Stmt) -- conditional branch -- (if clear front?)
+   --Need to use test function as basis for if stmt. 
+stmt (If t x y)  d w r = if test t w r then stmt x d w r
+                                       else stmt y d w r
 
-                       
 
     
 -- | Run a Karel program.
