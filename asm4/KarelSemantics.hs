@@ -1,7 +1,7 @@
 
 -- Jeremy Fischer 932-447-681
--- Peter Dorich 932-441-378
-
+-- Peter Dorich   932-441-378
+-- Yipeng Song    932-470-819
 
 module KarelSemantics where
 
@@ -76,8 +76,26 @@ stmt (Call m)   d w r = case lookup m d of
                           _        -> Error ("Undefined macro: " ++ m)
 
 --ITERATE:
+stmt (Iterate i s) d w r = if i > 0 then case stmt s d w r of 
+                                          (OK w' r') -> stmt (Iterate (i - 1) s) d w' r'
+                                          (Done r')  -> Done r'
+                                          (Error e)  -> Error e
+                                    else OK w r
 
 
+-- Blocks:
+stmt (Block []) _ w r = OK w r
+stmt (Block (s:ss)) d w r = case stmt s d w r of
+                              (OK w' r') -> stmt (Block ss) d w' r'
+                              (Done r')  -> Done r'
+                              (Error e)  -> Error e
+
+-- Loops:
+stmt (While t s) d w r = if (test t w r) then case stmt s d w r of
+                                                (OK w' r') -> stmt (While t s) d w' r'
+                                                (Done r')  -> Done r'
+                                                (Error e)  -> Error e
+                                         else OK w r
 
 --If (Test Stmt Stmt) -- conditional branch -- (if clear front?)
    --Need to use test function as basis for if stmt. 
