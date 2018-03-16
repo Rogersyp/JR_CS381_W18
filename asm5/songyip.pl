@@ -1,5 +1,6 @@
 % Jeremy Fischer 932-447-681
-
+% Yipeng Song    932-470-819
+% Peter Dorich   932-441-378
 
 % Here are a bunch of facts describing the Simpson's family tree.
 % Don't change them!
@@ -98,6 +99,17 @@ ancestor(X,Y) :- parent(X,Z), parent(Z,Y).
 
 
 % Extra credit: Define the predicate `related/2`.
+temp(X,Y) :- parent(Y,X).
+temp(X,Y) :- parent(A,X), temp(A,Y).
+
+related(X,Y) :- child(X,Y).
+related(X,Y) :- parent(X,Y).
+related(X,Y) :- sibling(X,Y).
+related(X,Y) :- ancestor(X,Y).
+related(X,Y) :- temp(X,Y).
+related(X,Y) :- temp(X,A), sibling(A,Y), X \= Y.
+related(X,Y) :- ancestor(X,A), sibling(A,Y), X \= Y.
+related(X,Y) :- ancestor(X,B), related(B,Y), X \= Y.
 
 
 
